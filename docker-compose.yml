@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: math-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  log_worker:
+    build:
+      context: .
+      dockerfile: log_worker.Dockerfile
+    container_name: log-worker
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    volumes:
+      - ./data:/log_worker/data

@@ -1,0 +1,45 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.log
+*.sqlite3
+*.db
+*.env
+.env.*
+
+# === Virtual Environment ===
+venv/
+ENV/
+env/
+.venv/
+
+# === IDEs ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+
+# === Docker ===
+*.tar
+docker-compose.override.yml
+
+# === Testing ===
+htmlcov/
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+
+# === Jupyter Notebooks (dacă folosești) ===
+.ipynb_checkpoints/
+
+# === Misc ===
+*.orig

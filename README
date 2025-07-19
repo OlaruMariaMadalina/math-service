@@ -1,0 +1,75 @@
+# Math Service
+
+The project is based on a REST API for mathematical operations (fibonacci, factorial, power)
+The architecture uses FastAPI, SQLAlchemy, Redis, and Docker.
+
+## Project Structure
+
+- **app/** – main FastAPI application code
+  - **main.py** – API entry point
+  - **controllers/** – routes for mathematical operations
+  - **auth/** – authentication and JWT management
+  - **db/** – models and database access
+  - **middleware/** – error logging
+  - **schemas/** – request/response validation
+  - **services/** – business logic for math operations
+  - **utils/** – config, cache, logger
+- **log_worker/** – worker that listens to the Redis `logs` channel and saves logs to the DB
+- **requirements.txt** – Python dependencies
+- **Dockerfile** – API image
+- **log_worker.Dockerfile** – worker image
+- **docker-compose.yml** – service orchestration
+- **.env** – environment variable configuration
+
+## Features
+
+- **Math operations:** fibonacci, factorial, power
+- **JWT authentication:** user registration and login
+- **Centralized logging:** each operation publishes a log to the Redis channel
+- **Log worker:** listens to the `logs` channel and saves logs to the database
+- **Prometheus metrics:** API monitoring
+- **Redis cache:** results are cached in Redis
+
+## Quick Start
+
+1. **Rename dist.env to .env and replace with your variables**
+
+   ```
+   DB_URL=sqlite:///data/math.db
+   SECRET_KEY=change_this_secret
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=30
+   REDIS_HOST=redis
+   REDIS_PORT=6379
+   ```
+
+2. **Build and run with Docker Compose**
+
+   docker-compose up --build
+
+
+3. **Access the API**
+   - http://localhost:8000/docs – Swagger UI
+
+
+## Main Endpoints
+
+- `POST /auth/register` – user registration
+- `POST /auth/login` – login and get JWT token
+- `POST /fibonacci` – calculate fibonacci (authentication required)
+- `POST /factorial` – calculate factorial
+- `POST /power` – calculate power
+
+
+## Logging and Worker
+
+- API operations send structured logs to the Redis `logs` channel.
+- The worker (`log_worker`) listens to this channel and saves logs to the `logs` table in the database.
+
+
+## Local Testing
+
+- You can run the API and worker separately with:
+  uvicorn app.main:app --reload
+  python log_worker/worker.py
+ or using Postman.

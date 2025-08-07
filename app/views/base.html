@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Math App{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    {% if is_authenticated %}
+        <header class="bg-gray-100 px-6 py-3 flex justify-between items-center text-sm text-gray-800">
+            <div class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 10a4 4 0 100-8 4 4 0 000 8zM2 18a8 8 0 1116 0H2z" />
+                </svg>
+                <span>Logged in as <strong>{{ username }}</strong></span>
+            </div>
+            <div class="flex items-center gap-4">
+                {% if role == "admin" %}
+                    <a href="/logs" class="text-blue-600 hover:underline">View Logs</a>
+                {% endif %}
+                <form method="post" action="/logout">
+                    <button type="submit"
+                            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition duration-200">
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </header>
+    {% endif %}
+
+
+    <div style="padding: 20px;">
+        {% block content %}{% endblock %}
+    </div>
+
+</body>
+</html>

@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
@@ -9,11 +7,11 @@ from app.db.repositories.user_repository import (
     get_user_by_username,
     create_user,
 )
-from app.auth.jwt_utils import (
-    create_access_token,
+from app.auth.password_utils import (
     get_password_hash,
     verify_password,
 )
+from app.auth.jwt_utils import JWTUtils
 from app.schemas.user_schemas import RegisterRequest
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
@@ -55,8 +53,8 @@ def login(
         )
 
     # Generate JWT access token with role and 30min expiry
-    token = create_access_token(
+    token = JWTUtils.create_access_token(
         data={"sub": user.username, "role": user.role},
-        expires_delta=timedelta(minutes=30),
+        expires_minutes=30
     )
     return {"access_token": token, "token_type": "bearer"}

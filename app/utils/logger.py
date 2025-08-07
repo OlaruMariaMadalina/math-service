@@ -48,5 +48,5 @@ def build_log_message(
         "user": user,
         "operation": operation,
         "input": input_data,
-        "result": result
+        "result": str(result)
     }

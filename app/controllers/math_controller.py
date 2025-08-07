@@ -1,17 +1,17 @@
 from fastapi import APIRouter, Depends
 
-from app.schemas.schemas import (
+from app.schemas.math_schemas import (
     MathOperationResponse,
     FibonacciRequest,
     PowRequest,
     FactorialRequest,
 )
-from app.services.services import (
+from app.services.math_service import (
     calculate_fibonacci,
     calculate_power,
     calculate_factorial,
 )
-from app.auth.jwt_utils import get_current_user
+from app.auth.dependencies import get_current_user
 from app.db.models.user_model import User
 from app.utils.logger import publish_log, build_log_message
 

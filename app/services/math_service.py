@@ -15,8 +15,14 @@ def cache_or_compute(
     cached = get_cached_result(cache_key)
     if cached is not None:
         try:
+            print(f"[CACHE HIT] Key: {cache_key}")
             return json.loads(cached)
         except json.JSONDecodeError:
+            print(
+                f"[CACHE HIT - JSON ERROR] "
+                f"[Raw cached value used. "
+                f"Key: {cache_key}"
+            )
             return cached
 
     result = compute_func()

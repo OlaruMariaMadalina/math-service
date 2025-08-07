@@ -1,75 +1,80 @@
 # Math Service
 
-The project is based on a REST API for mathematical operations (fibonacci, factorial, power)
-The architecture uses FastAPI, SQLAlchemy, Redis, and Docker.
+Math Service is a full-stack application for performing mathematical operations (fibonacci, factorial, power) with user authentication, logging, and caching. The backend is built with FastAPI, SQLAlchemy, and Redis, and supports both API and server-rendered HTML frontends.
 
 ## Project Structure
 
-- **app/** – main FastAPI application code
-  - **main.py** – API entry point
-  - **controllers/** – routes for mathematical operations
-  - **auth/** – authentication and JWT management
-  - **db/** – models and database access
-  - **middleware/** – error logging
-  - **schemas/** – request/response validation
-  - **services/** – business logic for math operations
-  - **utils/** – config, cache, logger
-- **log_worker/** – worker that listens to the Redis `logs` channel and saves logs to the DB
-- **requirements.txt** – Python dependencies
-- **Dockerfile** – API image
-- **log_worker.Dockerfile** – worker image
-- **docker-compose.yml** – service orchestration
-- **.env** – environment variable configuration
+- `app/` – FastAPI backend
+  - `main.py` – API entry point
+  - `controllers/` – API route handlers
+  - `auth/` – authentication and JWT logic
+  - `db/` – database models and access
+  - `middleware/` – error logging
+  - `schemas/` – request/response validation
+  - `services/` – math business logic
+  - `utils/` – config, cache, logger
+  - `views/` – Jinja2 HTML templates (frontend)
+- `log_worker/` – background worker for log persistence
+- `tests/` – integration and unit tests
+- `requirements.txt` – Python dependencies
+- `Dockerfile`, `log_worker.Dockerfile` – Docker images
+- `docker-compose.yml` – service orchestration
+- `.env` – environment variables
 
 ## Features
 
-- **Math operations:** fibonacci, factorial, power
-- **JWT authentication:** user registration and login
-- **Centralized logging:** each operation publishes a log to the Redis channel
-- **Log worker:** listens to the `logs` channel and saves logs to the database
-- **Prometheus metrics:** API monitoring
-- **Redis cache:** results are cached in Redis
+- Math operations: fibonacci, factorial, power
+- JWT authentication: user registration and login
+- Centralized logging: logs sent to Redis and persisted by worker
+- Redis cache: results are cached for performance
+- Prometheus metrics: API monitoring
+- Frontend: Jinja2 HTML templates
 
 ## Quick Start
 
-1. **Rename dist.env to .env and replace with your variables**
+1. **Configure environment:**
+   - Copy `dist.env` to `.env` and set your variables (DB, SECRET_KEY, etc.)
 
-   ```
-   DB_URL=sqlite:///data/math.db
-   SECRET_KEY=change_this_secret
-   ALGORITHM=HS256
-   ACCESS_TOKEN_EXPIRE_MINUTES=30
-   REDIS_HOST=redis
-   REDIS_PORT=6379
-   ```
-
-2. **Build and run with Docker Compose**
-
+2. **Build and run with Docker Compose:**
+   ```bash
    docker-compose up --build
+   ```
 
-
-3. **Access the API**
-   - http://localhost:8000/docs – Swagger UI
-
+3. **Access the API:**
+   - Swagger UI: http://localhost:8000/docs
+   - Built-in frontend: http://localhost:8000/auth, /math, /logs
 
 ## Main Endpoints
 
 - `POST /auth/register` – user registration
 - `POST /auth/login` – login and get JWT token
-- `POST /fibonacci` – calculate fibonacci (authentication required)
-- `POST /factorial` – calculate factorial
-- `POST /power` – calculate power
+- `POST /fibonacci` – calculate fibonacci (auth required)
+- `POST /factorial` – calculate factorial (auth required)
+- `POST /power` – calculate power (auth required)
 
+## Frontend Options
+
+- **Jinja2 templates:** Server-rendered HTML in `app/views/` (e.g., `auth.html`, `math.html`, `logs.html`).
 
 ## Logging and Worker
 
-- API operations send structured logs to the Redis `logs` channel.
-- The worker (`log_worker`) listens to this channel and saves logs to the `logs` table in the database.
+- API operations send logs to the Redis `logs` channel.
+- The `log_worker` service listens and saves logs to the database.
 
+## Testing
 
-## Local Testing
+- Tests are in the `tests/` directory.
+- Integration tests use a separate SQLite DB and mock Redis, so they do not affect production data or require Redis to be running.
+- Run all tests with:
+  ```bash
+  pytest
+  ```
 
-- You can run the API and worker separately with:
+## Local Development
+
+- Run the API and worker separately:
+  ```bash
   uvicorn app.main:app --reload
   python log_worker/worker.py
- or using Postman.
+  ```
+- Use Postman or the built-in frontend for manual testing.

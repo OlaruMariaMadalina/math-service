@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Math Operations{% endblock %}
+{% block content %}
+
+<h2 class="text-3xl font-bold text-center mb-10">Math Operations</h2>
+
+<div class="max-w-md mx-auto space-y-10">
+
+    <div class="bg-white rounded shadow p-6 text-center">
+        <h3 class="text-xl font-semibold mb-4">Fibonacci</h3>
+        <form method="post" action="/math" class="space-y-4">
+            <input type="hidden" name="operation" value="fibonacci">
+            <input type="number" name="n" required
+                   placeholder="Enter n"
+                   class="w-full px-3 py-2 border border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button type="submit"
+                    class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition duration-200">
+                Calculate
+            </button>
+        </form>
+        {% if fibonacci_error %}
+            <p class="text-red-600 mt-4 text-sm">{{ fibonacci_error }}</p>
+        {% elif fibonacci_result is not none %}
+            <p class="mt-4 text-green-600"><strong>Result:</strong> {{ fibonacci_result }}</p>
+        {% endif %}
+    </div>
+
+    <div class="bg-white rounded shadow p-6 text-center">
+        <h3 class="text-xl font-semibold mb-4">Power</h3>
+        <form method="post" action="/math" class="space-y-4">
+            <input type="hidden" name="operation" value="power">
+            <input type="number" name="base" required
+                   placeholder="Base"
+                   class="w-full px-3 py-2 border border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <input type="number" name="exponent" required
+                   placeholder="Exponent"
+                   class="w-full px-3 py-2 border border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-purple-500">
+            <button type="submit"
+                    class="w-full bg-purple-600 text-white py-2 rounded hover:bg-purple-700 transition duration-200">
+                Calculate
+            </button>
+        </form>
+        {% if power_error %}
+            <p class="text-red-600 mt-4 text-sm">{{ power_error }}</p>
+        {% elif power_result is not none %}
+            <p class="mt-4 text-green-600"><strong>Result:</strong> {{ power_result }}</p>
+        {% endif %}
+    </div>
+
+    <div class="bg-white rounded shadow p-6 text-center">
+        <h3 class="text-xl font-semibold mb-4">Factorial</h3>
+        <form method="post" action="/math" class="space-y-4">
+            <input type="hidden" name="operation" value="factorial">
+            <input type="number" name="n" required
+                   placeholder="Enter n"
+                   class="w-full px-3 py-2 border border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-green-500">
+            <button type="submit"
+                    class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition duration-200">
+                Calculate
+            </button>
+        </form>
+        {% if factorial_error %}
+            <p class="text-red-600 mt-4 text-sm">{{ factorial_error }}</p>
+        {% elif factorial_result is not none %}
+            <p class="mt-4 text-green-600"><strong>Result:</strong> {{ factorial_result }}</p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}
